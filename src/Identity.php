@@ -1,0 +1,41 @@
+<?php
+namespace Discuss;
+
+use Rhumsaa\Uuid\Uuid;
+
+
+/**
+ * Class UuidIdentity
+ * @package Discuss
+ * @author Simon Bennett <simon@bennett.im>
+ */
+interface Identity
+{
+    /**
+     * @param $uuid
+     */
+    public function __construct($uuid);
+
+    /**
+     * @param $string
+     * @return static
+     */
+    public static function fromString($string);
+
+    /**
+     * @return UUID
+     */
+    public static function random();
+
+    /**
+     * @return string
+     */
+    function __toString();
+
+    /**
+     * Test if ID matches another Id Object
+     * @param UuidIdentity $other
+     * @return bool
+     */
+    public function equal(Identity $other);
+}
