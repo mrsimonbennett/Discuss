@@ -14,7 +14,7 @@ use ReflectionClass;
 final class Member
 {
     /**
-     * @var
+     * @var MemberId
      */
     protected $id;
     /**
