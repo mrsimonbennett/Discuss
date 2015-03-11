@@ -2,8 +2,6 @@
 namespace Discuss;
 
 use Rhumsaa\Uuid\Uuid;
-
-
 /**
  * Class UuidIdentity
  * @package Discuss
@@ -34,7 +32,7 @@ interface Identity
 
     /**
      * Test if ID matches another Id Object
-     * @param UuidIdentity $other
+     * @param Identity $other
      * @return bool
      */
     public function equal(Identity $other);
