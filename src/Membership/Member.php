@@ -1,10 +1,9 @@
 <?php
 namespace Discuss\Membership;
 
+use Discuss\Aggregate\AggregateRoot;
 use Discuss\Membership\Events\MemberChangedEmail;
 use Discuss\Membership\Events\MemberRegistered;
-use InvalidArgumentException;
-use ReflectionClass;
 
 /**
  * Class Member
@@ -13,6 +12,7 @@ use ReflectionClass;
  */
 final class Member
 {
+    use AggregateRoot;
     /**
      * @var MemberId
      */
@@ -70,39 +70,6 @@ final class Member
         $this->email = $memberEmailChanged->getEmail();
     }
 
-    /**
-     * @var array $events
-     */
-    private $events = array();
-
-    /**
-     * Applies event and adds it to history
-     * @param $event
-     */
-    private function apply($event)
-    {
-        $eventName = (new ReflectionClass($event))->getShortName();
-        $methodName = "apply{$eventName}";
-        if (!is_callable([$this, $methodName]) || $methodName === __METHOD__) {
-            throw new InvalidArgumentException(
-                "There is no handler registered for {$eventName}"
-            );
-        }
-        $this->{$methodName}($event);
-        $this->events[] = $event;
-    }
-
-    /**
-     * Flushes the array queue and returns the events
-     *
-     * @return array
-     */
-    public function releaseEvents()
-    {
-        $events = $this->events;
-        $this->events = [];
-        return $events;
-    }
 
     /**
      * @return MemberEmail
