@@ -11,7 +11,7 @@ final class MemberTest extends \TestCase
 {
     public function testUpdatingUsersEmail()
     {
-        $member = \Discuss\Membership\Member::register(MemberId::generate(),
+        $member = \Discuss\Membership\Member::register(MemberId::random(),
                                                        new MemberEmail('simon@bennett.im'),
                                                        new MemberName('Simon Bennett', 'MrSimonBennett'));
         $member->changeEmail(new MemberEmail('simon.bennett@bennett.im'));
