@@ -1,5 +1,5 @@
 <?php
-namespace Discuss\MemberShip;
+namespace Discuss\Membership;
 
 use Discuss\Identity;
 use Discuss\UuidIdentity;
