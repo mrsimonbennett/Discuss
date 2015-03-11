@@ -1,16 +1,22 @@
 <?php
 namespace Discuss\Membership;
+
 use Discuss\Membership\Events\MemberEmailChanged;
-use ReflectionClass;
+use Discuss\Membership\Events\MemberRegistered;
 use InvalidArgumentException;
+use ReflectionClass;
 
 /**
  * Class Member
  * @package Discuss\Membership
  * @author  Simon Bennett <simon@bennett.im>
  */
-final class Member 
+final class Member
 {
+    /**
+     * @var
+     */
+    protected $id;
     /**
      * @var MemberEmail
      */
@@ -23,18 +29,41 @@ final class Member
     /**
      * @param MemberEmail $email
      * @param MemberName $name
+     * @return static
      */
-    public function __construct(MemberEmail $email, MemberName $name)
+    public static function register(MemberEmail $email, MemberName $name)
     {
-        $this->id = MemberId::random();
-        $this->email = $email;
-        $this->name = $name;
+        $member = new static();
+        $member->apply(new MemberRegistered(MemberId::random(), $email, $name));
+
+        return $member;
     }
+
+    /**
+     * @param MemberEmail $email
+     */
     public function changeEmail(MemberEmail $email)
     {
         $this->apply(new MemberEmailChanged($email));
     }
 
+
+    /**
+     * Event Application
+     */
+    /**
+     * @param MemberRegistered $memberRegistered
+     */
+    public function applyMemberRegistered(MemberRegistered $memberRegistered)
+    {
+        $this->id = $memberRegistered->getId();
+        $this->email = $memberRegistered->getEmail();
+        $this->name = $memberRegistered->getName();
+    }
+
+    /**
+     * @param MemberEmailChanged $memberEmailChanged
+     */
     public function applyMemberEmailChanged(MemberEmailChanged $memberEmailChanged)
     {
         $this->email = $memberEmailChanged->getEmail();
@@ -61,6 +90,7 @@ final class Member
         $this->{$methodName}($event);
         $this->events[] = $event;
     }
+
     /**
      * Flushes the array queue and returns the events
      *
@@ -73,6 +103,9 @@ final class Member
         return $events;
     }
 
+    /**
+     * @return MemberEmail
+     */
     public function getEmail()
     {
         return $this->email;
