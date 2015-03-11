@@ -1,5 +1,6 @@
 <?php
 namespace Discuss\Aggregate;
+
 use InvalidArgumentException;
 use ReflectionClass;
 
@@ -41,6 +42,14 @@ trait AggregateRoot
     {
         $events = $this->events;
         $this->events = [];
+
         return $events;
     }
+
+    public function getEvents()
+    {
+        return $this->events;
+    }
+
+
 }
