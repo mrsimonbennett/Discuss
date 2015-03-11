@@ -1,7 +1,7 @@
 <?php
 namespace Discuss\Membership;
 
-use Discuss\Membership\Events\MemberEmailChanged;
+use Discuss\Membership\Events\MemberChangedEmail;
 use Discuss\Membership\Events\MemberRegistered;
 use InvalidArgumentException;
 use ReflectionClass;
@@ -45,7 +45,7 @@ final class Member
      */
     public function changeEmail(MemberEmail $email)
     {
-        $this->apply(new MemberEmailChanged($this->id, $email));
+        $this->apply(new MemberChangedEmail($this->id, $email));
     }
 
 
@@ -63,9 +63,9 @@ final class Member
     }
 
     /**
-     * @param MemberEmailChanged $memberEmailChanged
+     * @param MemberChangedEmail $memberEmailChanged
      */
-    public function applyMemberEmailChanged(MemberEmailChanged $memberEmailChanged)
+    public function applyMemberChangedEmail(MemberChangedEmail $memberEmailChanged)
     {
         $this->email = $memberEmailChanged->getEmail();
     }

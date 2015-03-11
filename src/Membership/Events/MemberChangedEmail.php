@@ -4,11 +4,11 @@ use Discuss\Membership\MemberEmail;
 use Discuss\Membership\MemberId;
 
 /**
- * Class MemberEmailChanged
+ * Class MemberChangedEmail
  * @package Discuss\Membership\Events
  * @author  Simon Bennett <simon@bennett.im>
  */
-final class MemberEmailChanged
+final class MemberChangedEmail
 {
     /**
      * @var MemberEmail
