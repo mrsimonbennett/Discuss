@@ -27,14 +27,15 @@ final class Member
     private $name;
 
     /**
+     * @param MemberId $id
      * @param MemberEmail $email
      * @param MemberName $name
      * @return static
      */
-    public static function register(MemberEmail $email, MemberName $name)
+    public static function register(MemberId $id, MemberEmail $email, MemberName $name)
     {
         $member = new static();
-        $member->apply(new MemberRegistered(MemberId::random(), $email, $name));
+        $member->apply(new MemberRegistered($id, $email, $name));
 
         return $member;
     }
