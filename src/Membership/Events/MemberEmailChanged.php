@@ -14,13 +14,19 @@ final class MemberEmailChanged
      * @var MemberEmail
      */
     private $email;
+    /**
+     * @var MemberId
+     */
+    private $memberId;
 
     /**
+     * @param MemberId $memberId
      * @param MemberEmail $email
      */
-    public function __construct(MemberEmail $email)
+    public function __construct(MemberId $memberId, MemberEmail $email)
     {
         $this->email = $email;
+        $this->memberId = $memberId;
     }
 
     /**
@@ -30,4 +36,13 @@ final class MemberEmailChanged
     {
         return $this->email;
     }
+
+    /**
+     * @return MemberId
+     */
+    public function getMemberId()
+    {
+        return $this->memberId;
+    }
+
 }

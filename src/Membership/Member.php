@@ -45,7 +45,7 @@ final class Member
      */
     public function changeEmail(MemberEmail $email)
     {
-        $this->apply(new MemberEmailChanged($email));
+        $this->apply(new MemberEmailChanged($this->id, $email));
     }
 
 
