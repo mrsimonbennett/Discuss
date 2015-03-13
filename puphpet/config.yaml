@@ -74,7 +74,19 @@ cron:
     jobs: {  }
 firewall:
     install: '1'
-    rules: {  }
+    rules:
+            9N6DMurTB12WRo:
+                port:
+                    - '2113'
+                priority: '100'
+                proto: tcp
+                action: accept
+            9N6DMurT12BWRo:
+                port:
+                    - '2112'
+                priority: '100'
+                proto: tcp
+                action: accept
 apache:
     install: 0
     settings:
