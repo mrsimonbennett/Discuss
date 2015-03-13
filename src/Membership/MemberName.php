@@ -1,12 +1,14 @@
 <?php
 namespace Discuss\Membership;
 
+use Broadway\Serializer\SerializableInterface;
+
 /**
  * Class MemberName
  * @package Discuss\MemberShip
  * @author Simon Bennett <simon@bennett.im>
  */
-final class MemberName
+final class MemberName implements SerializableInterface
 {
     /**
      * @var string
@@ -26,6 +28,7 @@ final class MemberName
         $this->fullName = $fullName;
         $this->knowBy = $knowBy;
     }
+
     /**
      * @return string
      */
@@ -33,6 +36,7 @@ final class MemberName
     {
         return $this->fullName;
     }
+
     /**
      * @return string
      */
@@ -42,4 +46,20 @@ final class MemberName
     }
 
 
+    /**
+     * @param array $data
+     * @return mixed The object instance
+     */
+    public static function deserialize(array $data)
+    {
+        return new static($data['fullName'], $data['knowby']);
+    }
+
+    /**
+     * @return array
+     */
+    public function serialize()
+    {
+        return ['fullName' => $this->fullName, 'knowby' => $this->knowBy];
+    }
 }

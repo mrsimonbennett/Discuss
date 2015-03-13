@@ -1,5 +1,7 @@
 <?php
 namespace Discuss\Membership\Events;
+
+use Broadway\Serializer\SerializableInterface;
 use Discuss\Membership\MemberEmail;
 use Discuss\Membership\MemberId;
 
@@ -8,7 +10,7 @@ use Discuss\Membership\MemberId;
  * @package Discuss\Membership\Events
  * @author  Simon Bennett <simon@bennett.im>
  */
-final class MemberChangedEmail
+final class MemberChangedEmail implements SerializableInterface
 {
     /**
      * @var MemberEmail
@@ -45,4 +47,19 @@ final class MemberChangedEmail
         return $this->memberId;
     }
 
+    /**
+     * @return mixed The object instance
+     */
+    public static function deserialize(array $data)
+    {
+        return new static(MemberId::fromString($data['id']), MemberEmail::deserialize($data['email']));
+    }
+
+    /**
+     * @return array
+     */
+    public function serialize()
+    {
+        return ['id' => (string)$this->getMemberId(), 'email' => $this->getEmail()->serialize()];
+    }
 }
