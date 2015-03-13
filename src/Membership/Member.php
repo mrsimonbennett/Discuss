@@ -33,7 +33,7 @@ class Member extends EventSourcedAggregateRoot
      */
     public static function register(MemberId $id, MemberEmail $email, MemberName $name)
     {
-        $member = new static($id);
+        $member = new static();
         $member->apply(new MemberRegistered($id, $email, $name));
 
         return $member;
