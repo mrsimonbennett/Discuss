@@ -1,5 +1,6 @@
 <?php
 use Discuss\Discussion\Thread;
+use Discuss\Discussion\ThreadAuthorId;
 use Discuss\Discussion\ThreadBody;
 use Discuss\Discussion\ThreadId;
 use Discuss\Discussion\ThreadSubject;
@@ -28,10 +29,10 @@ final class ThreadTest extends TestCase
 
         $thread = Thread::startThread(
             ThreadId::random(),
-            $member->getId(),
+            ThreadAuthorId::fromIdentity($member->getId()),
             $threadSubject, $threadBody);
 
-        $this->assertEquals($member->getId(), $thread->getAuthorId());
+        $this->assertEquals((string)$member->getId(), (string)$thread->getAuthorId());
         $this->assertEquals($threadSubject, $thread->getThreadSubject());
         $this->assertEquals($threadBody, $thread->getThreadBody());
     }

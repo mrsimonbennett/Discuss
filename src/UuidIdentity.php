@@ -43,6 +43,14 @@ abstract class UuidIdentity implements Identity
     }
 
     /**
+     * @param Identity $other
+     * @return Identity
+     */
+    public static function fromIdentity(Identity $other)
+    {
+        return new static((string)$other);
+    }
+    /**
      * @return string
      */
     function __toString()

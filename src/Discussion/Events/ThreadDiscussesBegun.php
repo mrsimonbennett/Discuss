@@ -2,11 +2,10 @@
 namespace Discuss\Discussion\Events;
 
 use Broadway\Serializer\SerializableInterface;
+use Discuss\Discussion\ThreadAuthorId;
 use Discuss\Discussion\ThreadBody;
 use Discuss\Discussion\ThreadId;
 use Discuss\Discussion\ThreadSubject;
-use Discuss\Membership\Member;
-use Discuss\Membership\MemberId;
 
 /**
  * Class ThreadDiscussesBegun
@@ -20,7 +19,7 @@ final class ThreadDiscussesBegun implements SerializableInterface
      */
     private $threadId;
     /**
-     * @var MemberId
+     * @var ThreadAuthorId
      */
     private $authorId;
 
@@ -35,13 +34,13 @@ final class ThreadDiscussesBegun implements SerializableInterface
 
     /**
      * @param ThreadId $threadId
-     * @param MemberId $authorId
+     * @param ThreadAuthorId $authorId
      * @param ThreadSubject $threadSubject
      * @param ThreadBody $threadBody
      */
     public function __construct(
         ThreadId $threadId,
-        MemberId $authorId,
+        ThreadAuthorId $authorId,
         ThreadSubject $threadSubject,
         ThreadBody $threadBody
     ) {
@@ -61,7 +60,7 @@ final class ThreadDiscussesBegun implements SerializableInterface
     }
 
     /**
-     * @return MemberId
+     * @return ThreadAuthorId
      */
     public function getAuthorId()
     {
@@ -91,7 +90,7 @@ final class ThreadDiscussesBegun implements SerializableInterface
     {
         return new static(
             new ThreadId($data['id']),
-            new MemberId($data['authorId']),
+            new ThreadAuthorId($data['authorId']),
             ThreadSubject::deserialize($data['threadSubject']),
             ThreadBody::deserialize($data['threadBody'])
         );

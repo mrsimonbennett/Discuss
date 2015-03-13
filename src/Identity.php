@@ -36,4 +36,10 @@ interface Identity
      * @return bool
      */
     public function equal(Identity $other);
+
+    /**
+     * @param Identity $other
+     * @return Identity
+     */
+    public static function fromIdentity(Identity $other);
 }

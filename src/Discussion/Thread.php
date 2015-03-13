@@ -3,7 +3,6 @@ namespace Discuss\Discussion;
 
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
 use Discuss\Discussion\Events\ThreadDiscussesBegun;
-use Discuss\Membership\MemberId;
 
 /**
  * Class Thread
@@ -17,7 +16,7 @@ final class Thread extends EventSourcedAggregateRoot
      */
     protected $threadId;
     /**
-     * @var MemberId
+     * @var ThreadAuthorId
      */
     protected $authorId;
     /**
@@ -31,13 +30,14 @@ final class Thread extends EventSourcedAggregateRoot
 
     /**
      * @param ThreadId $threadId
-     * @param MemberId $authorId
+     * @param ThreadAuthorId $authorId
      * @param ThreadSubject $threadSubject
-     * @param ThreadBody $body
+     * @param ThreadBody $threadBody
+     * @return static
      */
     public static function startThread(
         ThreadId $threadId,
-        MemberId $authorId,
+        ThreadAuthorId $authorId,
         ThreadSubject $threadSubject,
         ThreadBody $threadBody
     ) {
@@ -77,7 +77,7 @@ final class Thread extends EventSourcedAggregateRoot
     }
 
     /**
-     * @return MemberId
+     * @return ThreadAuthorId
      */
     public function getAuthorId()
     {
