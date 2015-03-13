@@ -1,8 +1,7 @@
 <?php
 namespace Discuss\Membership;
 
-use Discuss\Aggregate\AggregateHistory;
-use Discuss\Aggregate\AggregateRoot;
+use Broadway\EventSourcing\EventSourcedAggregateRoot;
 use Discuss\Membership\Events\MemberChangedEmail;
 use Discuss\Membership\Events\MemberRegistered;
 
@@ -11,9 +10,8 @@ use Discuss\Membership\Events\MemberRegistered;
  * @package Discuss\Membership
  * @author  Simon Bennett <simon@bennett.im>
  */
-final class Member
+class Member extends EventSourcedAggregateRoot
 {
-    use AggregateRoot;
     /**
      * @var MemberId
      */
@@ -27,10 +25,6 @@ final class Member
      */
     private $name;
 
-    private function __construct(MemberId $id)
-    {
-        $this->id = $id;
-    }
     /**
      * @param MemberId $id
      * @param MemberEmail $email
@@ -50,7 +44,39 @@ final class Member
      */
     public function changeEmail(MemberEmail $email)
     {
+        if ($email == $this->getEmail()) {
+            return;
+        }
         $this->apply(new MemberChangedEmail($this->id, $email));
+    }
+    /**
+     * Event Application
+     */
+    /**
+     * @param MemberRegistered $memberRegistered
+     */
+    public function applyMemberRegistered(MemberRegistered $memberRegistered)
+    {
+        $this->id = $memberRegistered->getId();
+        $this->email = $memberRegistered->getEmail();
+        $this->name = $memberRegistered->getName();
+    }
+
+    /**
+     * @param MemberChangedEmail $memberEmailChanged
+     */
+    public function applyMemberChangedEmail(MemberChangedEmail $memberEmailChanged)
+    {
+        $this->email = $memberEmailChanged->getEmail();
+    }
+
+
+    /**
+     * @return MemberEmail
+     */
+    public function getEmail()
+    {
+        return $this->email;
     }
 
     /**
@@ -61,42 +87,11 @@ final class Member
         return $this->id;
     }
 
-
     /**
-     * Event Application
+     * @return string
      */
-    /**
-     * @param MemberRegistered $memberRegistered
-     */
-    private function applyMemberRegistered(MemberRegistered $memberRegistered)
+    public function getAggregateRootId()
     {
-        $this->email = $memberRegistered->getEmail();
-        $this->name = $memberRegistered->getName();
-    }
-
-    /**
-     * @param MemberChangedEmail $memberEmailChanged
-     */
-    private function applyMemberChangedEmail(MemberChangedEmail $memberEmailChanged)
-    {
-        $this->email = $memberEmailChanged->getEmail();
-    }
-    public static function reconstituteFrom(AggregateHistory $aggregateHistory)
-    {
-        $memberId = $aggregateHistory->getAggregateId();
-        $member = new Member($memberId);
-        foreach($aggregateHistory as $event)
-        {
-            $member->apply($event);
-        }
-        return $member;
-    }
-
-    /**
-     * @return MemberEmail
-     */
-    public function getEmail()
-    {
-        return $this->email;
+        return $this->id;
     }
 }
