@@ -24,7 +24,7 @@ final class MemberTest extends \TestCase
     {
 
         /** @var MemberRepository $memberRepo */
-        $memberRepo = $this->app->make(MemberRepository::class);
+       // $memberRepo = $this->app->make(MemberRepository::class);
 
 
         /** @var Member $member */

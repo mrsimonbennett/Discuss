@@ -1,6 +1,11 @@
 <?php
 namespace Discuss\Discussion;
 
+/**
+ * Class Author
+ * @package Discuss\Discussion
+ * @author Simon Bennett <simon@bennett.im>
+ */
 final class Author
 {
     /**
@@ -16,6 +21,12 @@ final class Author
         $this->authorId = $authorId;
     }
 
+    /**
+     * @param ThreadId $threadId
+     * @param ThreadSubject $threadSubject
+     * @param ThreadBody $threadBody
+     * @return static
+     */
     public function openThread(ThreadId $threadId, ThreadSubject $threadSubject, ThreadBody $threadBody)
     {
         return Thread::openThread($threadId, $this, $threadSubject, $threadBody);
