@@ -1,6 +1,6 @@
 <?php
 use Discuss\Discussion\Thread;
-use Discuss\Discussion\ThreadAuthorId;
+use Discuss\Discussion\AuthorId;
 use Discuss\Discussion\ThreadBody;
 use Discuss\Discussion\ThreadId;
 use Discuss\Discussion\ThreadSubject;
@@ -20,20 +20,50 @@ final class ThreadTest extends TestCase
      */
     public function testCreatingANewThread()
     {
+        $member = $this->buildMember();
+
+        list($threadSubject, $threadBody) = $this->CreateThreadBodyAndContent();
+
+        $thread = Thread::openThread(
+            ThreadId::random(),
+            new \Discuss\Discussion\Author(AuthorId::fromIdentity($member->getId())),
+            $threadSubject, $threadBody);
+
+        $this->assertEquals((string)$member->getId(), (string)$thread->getAuthor()->getAuthorId());
+        $this->assertEquals($threadSubject, $thread->getThreadSubject());
+        $this->assertEquals($threadBody, $thread->getThreadBody());
+    }
+
+    public function testOpeningThreadFromAuthor()
+    {
+        $author = new \Discuss\Discussion\Author(AuthorId::random());
+
+        list($threadSubject, $threadBody) = $this->CreateThreadBodyAndContent();
+
+        $author->openThread(ThreadId::random(), $threadSubject, $threadBody);
+
+
+    }
+    /**
+     * @return static
+     */
+    protected function buildMember()
+    {
         $member = Member::register(MemberId::random(),
             new MemberEmail('simon@bennett.im'),
             new MemberName('Simon Bennett', 'mrsimonbennett'));
 
+        return $member;
+    }
+
+    /**
+     * @return array
+     */
+    protected function CreateThreadBodyAndContent()
+    {
         $threadSubject = new ThreadSubject('Event Sourcing');
         $threadBody = new ThreadBody("Lets give this ago");
 
-        $thread = Thread::startThread(
-            ThreadId::random(),
-            ThreadAuthorId::fromIdentity($member->getId()),
-            $threadSubject, $threadBody);
-
-        $this->assertEquals((string)$member->getId(), (string)$thread->getAuthorId());
-        $this->assertEquals($threadSubject, $thread->getThreadSubject());
-        $this->assertEquals($threadBody, $thread->getThreadBody());
+        return array($threadSubject, $threadBody);
     }
 }

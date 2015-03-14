@@ -2,7 +2,8 @@
 namespace Discuss\Discussion\Events;
 
 use Broadway\Serializer\SerializableInterface;
-use Discuss\Discussion\ThreadAuthorId;
+use Discuss\Discussion\Author;
+use Discuss\Discussion\AuthorId;
 use Discuss\Discussion\ThreadBody;
 use Discuss\Discussion\ThreadId;
 use Discuss\Discussion\ThreadSubject;
@@ -19,9 +20,9 @@ final class ThreadDiscussesBegun implements SerializableInterface
      */
     private $threadId;
     /**
-     * @var ThreadAuthorId
+     * @var Author
      */
-    private $authorId;
+    private $author;
 
     /**
      * @var ThreadSubject
@@ -34,19 +35,18 @@ final class ThreadDiscussesBegun implements SerializableInterface
 
     /**
      * @param ThreadId $threadId
-     * @param ThreadAuthorId $authorId
+     * @param Author $author
      * @param ThreadSubject $threadSubject
      * @param ThreadBody $threadBody
      */
     public function __construct(
         ThreadId $threadId,
-        ThreadAuthorId $authorId,
+        Author $author,
         ThreadSubject $threadSubject,
         ThreadBody $threadBody
     ) {
         $this->threadId = $threadId;
-        $this->authorId = $authorId;
-
+        $this->author = $author;
         $this->threadSubject = $threadSubject;
         $this->threadBody = $threadBody;
     }
@@ -60,11 +60,11 @@ final class ThreadDiscussesBegun implements SerializableInterface
     }
 
     /**
-     * @return ThreadAuthorId
+     * @return Author
      */
-    public function getAuthorId()
+    public function getAuthor()
     {
-        return $this->authorId;
+        return $this->author;
     }
 
     /**
@@ -90,7 +90,7 @@ final class ThreadDiscussesBegun implements SerializableInterface
     {
         return new static(
             new ThreadId($data['id']),
-            new ThreadAuthorId($data['authorId']),
+            new Author(new AuthorId($data['authorId'])),
             ThreadSubject::deserialize($data['threadSubject']),
             ThreadBody::deserialize($data['threadBody'])
         );
@@ -103,7 +103,7 @@ final class ThreadDiscussesBegun implements SerializableInterface
     {
         return [
             'id' => (string)$this->threadId,
-            'authorId' => (string)$this->authorId,
+            'authorId' => (string)$this->author->getAuthorId(),
             'threadSubject' => $this->threadSubject->serialize(),
             'threadBody' => $this->threadBody->serialize(),
         ];

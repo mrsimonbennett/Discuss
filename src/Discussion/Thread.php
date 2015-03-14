@@ -16,9 +16,9 @@ final class Thread extends EventSourcedAggregateRoot
      */
     protected $threadId;
     /**
-     * @var ThreadAuthorId
+     * @var Author
      */
-    protected $authorId;
+    protected $author;
     /**
      * @var ThreadSubject
      */
@@ -30,20 +30,20 @@ final class Thread extends EventSourcedAggregateRoot
 
     /**
      * @param ThreadId $threadId
-     * @param ThreadAuthorId $authorId
+     * @param Author $author
      * @param ThreadSubject $threadSubject
      * @param ThreadBody $threadBody
      * @return static
      */
-    public static function startThread(
+    public static function openThread(
         ThreadId $threadId,
-        ThreadAuthorId $authorId,
+        Author $author,
         ThreadSubject $threadSubject,
         ThreadBody $threadBody
     ) {
         $thread = new static();
 
-        $thread->apply(new ThreadDiscussesBegun($threadId, $authorId, $threadSubject, $threadBody));
+        $thread->apply(new ThreadDiscussesBegun($threadId, $author, $threadSubject, $threadBody));
 
         return $thread;
     }
@@ -55,7 +55,7 @@ final class Thread extends EventSourcedAggregateRoot
     public function applyThreadDiscussesBegun(ThreadDiscussesBegun $threadDiscussesBegun)
     {
         $this->threadId = $threadDiscussesBegun->getThreadId();
-        $this->authorId = $threadDiscussesBegun->getAuthorId();
+        $this->author = $threadDiscussesBegun->getAuthor();
         $this->threadSubject = $threadDiscussesBegun->getThreadSubject();
         $this->threadBody = $threadDiscussesBegun->getThreadBody();
     }
@@ -77,11 +77,11 @@ final class Thread extends EventSourcedAggregateRoot
     }
 
     /**
-     * @return ThreadAuthorId
+     * @return Author
      */
-    public function getAuthorId()
+    public function getAuthor()
     {
-        return $this->authorId;
+        return $this->author;
     }
 
     /**

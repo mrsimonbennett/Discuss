@@ -28,9 +28,9 @@ final class MemberTest extends \TestCase
 
 
         /** @var Member $member */
-        $member = $memberRepo->load(new MemberId('9793f26b-b8c7-42bb-bce1-702e1355fb21'));
-        $member->changeEmail(new MemberEmail('simon.bennett@bennett.im'));
-        $memberRepo->save($member);
+       // $member = $memberRepo->load(new MemberId('9793f26b-b8c7-42bb-bce1-702e1355fb21'));
+        //$member->changeEmail(new MemberEmail('simon.bennett@bennett.im'));
+      //  $memberRepo->save($member);
 
 
     }

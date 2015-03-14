@@ -4,7 +4,7 @@ namespace Discuss\Discussion;
 use Discuss\Identity;
 use Discuss\UuidIdentity;
 
-final class ThreadAuthorId extends UuidIdentity implements Identity
+final class AuthorId extends UuidIdentity implements Identity
 {
    
 }
