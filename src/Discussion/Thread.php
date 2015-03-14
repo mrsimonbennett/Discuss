@@ -68,36 +68,5 @@ final class Thread extends EventSourcedAggregateRoot
         return $this->threadId;
     }
 
-    /**
-     * @return ThreadId
-     */
-    public function getThreadId()
-    {
-        return $this->threadId;
-    }
-
-    /**
-     * @return Author
-     */
-    public function getAuthor()
-    {
-        return $this->author;
-    }
-
-    /**
-     * @return ThreadSubject
-     */
-    public function getThreadSubject()
-    {
-        return $this->threadSubject;
-    }
-
-    /**
-     * @return ThreadBody
-     */
-    public function getThreadBody()
-    {
-        return $this->threadBody;
-    }
 
 }

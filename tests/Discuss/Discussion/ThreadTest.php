@@ -1,7 +1,7 @@
 <?php
 use Discuss\Discussion\Author;
-use Discuss\Discussion\Thread;
 use Discuss\Discussion\AuthorId;
+use Discuss\Discussion\Thread;
 use Discuss\Discussion\ThreadBody;
 use Discuss\Discussion\ThreadId;
 use Discuss\Discussion\ThreadSubject;
@@ -30,11 +30,16 @@ final class ThreadTest extends TestCase
             new Author(AuthorId::fromIdentity($member->getId())),
             $threadSubject, $threadBody);
 
-        $this->assertCount(1,$thread->getUncommittedEvents());
 
-        $this->assertEquals((string)$member->getId(), (string)$thread->getAuthor()->getAuthorId());
-        $this->assertEquals($threadSubject, $thread->getThreadSubject());
-        $this->assertEquals($threadBody, $thread->getThreadBody());
+        $events = $thread->getUncommittedEvents()->getIterator();
+        $this->assertCount(1, $events);
+
+        /** @var \Discuss\Discussion\Events\ThreadDiscussesBegun $threadDiscusesBegunEvent */
+        $threadDiscusesBegunEvent = $events[0]->getPayload();
+
+        $this->assertInstanceOf(\Discuss\Discussion\Events\ThreadDiscussesBegun::class, $threadDiscusesBegunEvent);
+        $this->assertEquals($threadBody,$threadDiscusesBegunEvent->getThreadBody());
+
     }
 
     public function testOpeningThreadFromAuthor()
@@ -45,6 +50,7 @@ final class ThreadTest extends TestCase
 
         $author->openThread(ThreadId::random(), $threadSubject, $threadBody);
     }
+
     /**
      * @return static
      */
